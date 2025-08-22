@@ -8,7 +8,8 @@ import {
   Settings, 
   FileText, 
   ClipboardCheck,
-  ChevronLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
   GraduationCap
 } from 'lucide-react';
 
@@ -21,6 +22,7 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse }) => {
   const [activeItem, setActiveItem] = useState('Dashboard');
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -35,6 +37,20 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse
     setActiveItem(label);
   };
 
+  const getIconComponent = (icon: any, isActive: boolean, isHovered: boolean) => {
+    const Icon = icon;
+    return (
+      <Icon 
+        size={20} 
+        className={`
+          transition-all duration-300
+          ${isActive ? 'text-white' : 'text-blue-400'}
+          ${isHovered ? 'scale-110' : 'scale-100'}
+        `} 
+      />
+    );
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -46,11 +62,12 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse
       )}
       
       <aside
-        className={`bg-white shadow-xl fixed inset-y-0 left-0 z-50 transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col ${
-          isCollapsed ? 'w-20' : 'w-64'
-        }`}
+        className={`
+          bg-blue-50 shadow-xl fixed inset-y-0 left-0 z-50 transform 
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0 transition-all duration-300 ease-in-out flex flex-col
+          ${isCollapsed ? 'w-20' : 'w-64'}
+        `}
       >
         {/* Header with logo */}
         <div className="flex justify-between items-center p-4 border-b border-gray-100">
@@ -63,8 +80,11 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse
             )}
           </div>
           {!isCollapsed && (
-            <button onClick={toggle} className="md:hidden">
-              <X size={20} className="text-gray-500 hover:text-gray-700 transition-colors" />
+            <button 
+              onClick={toggle} 
+              className="md:hidden p-1 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <X size={20} className="text-gray-500" />
             </button>
           )}
         </div>
@@ -74,43 +94,63 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeItem === item.label;
+            const isHovered = hoveredItem === item.id;
             
             return (
               <button
                 key={item.id}
                 onClick={() => handleItemClick(item.label)}
-                className={`w-full flex items-center p-3 rounded-xl transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-600 shadow-sm' 
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-blue-500'
-                } ${isCollapsed ? 'justify-center' : ''}`}
+                onMouseEnter={() => setHoveredItem(item.id)}
+                onMouseLeave={() => setHoveredItem(null)}
+                className={`
+                  w-full flex items-center p-3 rounded-xl transition-all duration-300 group
+                  ${isCollapsed ? 'justify-center' : ''}
+                  ${isActive 
+                    ? 'bg-blue-500 text-white shadow-sm transform scale-[1.02]' 
+                    : 'text-gray-600 hover:bg-blue-200 hover:text-blue-600 hover:transform hover:scale-[1.02]'
+                  }
+                `}
                 title={isCollapsed ? item.label : ''}
               >
-                <Icon 
-                  size={20} 
-                  className={isActive ? "text-blue-600" : "text-gray-500"} 
-                />
+                <div className={`
+                  relative flex items-center justify-center
+                  ${isCollapsed ? '' : 'mr-3'}
+                `}>
+                  {getIconComponent(item.icon, isActive, isHovered)}
+              
+                </div>
+                
                 {!isCollapsed && (
-                  <span className="ml-3 font-medium">{item.label}</span>
+                  <span className="font-medium group-hover:translate-x-1 transition-transform">
+                    {item.label}
+                  </span>
                 )}
+                
+                
               </button>
             );
           })}
         </nav>
         
-        {/* Collapse toggle at bottom */}
-        <div className="p-4 border-t border-gray-100">
+        {/* Collapse toggle at bottom right */}
+        <div className="p-4 border-t border-gray-100 flex justify-end">
           <button
             onClick={toggleCollapse}
-            className="hidden md:flex items-center justify-center w-10 h-10 ml-auto mr-auto rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+            className={`
+              hidden md:flex items-center justify-center w-10 h-10 rounded-full
+              bg-blue-200 hover:bg-blue-300 
+              transition-all duration-300 transform hover:scale-110
+              shadow-md hover:shadow-lg
+              ${isCollapsed ? '' : 'mr-2'}
+            `}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <ChevronLeft 
-              size={16} 
-              className={`text-gray-600 transition-transform duration-300 ${
-                isCollapsed ? 'rotate-180' : ''
-              }`} 
-            />
+            {isCollapsed ? (
+              <PanelLeftOpen size={24} className="text-blue-600" />
+            ) : (
+              <PanelLeftClose size={24} className="text-blue-600" />
+            )}
+            
           </button>
         </div>
       </aside>
