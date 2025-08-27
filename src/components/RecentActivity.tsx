@@ -214,7 +214,7 @@ const RecentActivity = () => {
             <div className="text-xs text-gray-600">Published</div>
           </div>
           <div className="bg-amber-50/50 p-2 rounded-lg">
-            <div className="text-sm font-bold text-amber-600">
+            <div className="text-sm font-bold text-amber-500">
               {activities.filter(a => a.status === 'Draft').length}
             </div>
             <div className="text-xs text-gray-600">Draft</div>
