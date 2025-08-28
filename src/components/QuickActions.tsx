@@ -1,26 +1,23 @@
 // components/QuickActions.tsx
-'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Plus, Users, ArrowRight, Sparkles, Zap } from 'lucide-react';
 
-const QuickActions = () => {
+interface QuickActionsProps {
+  onAddCourse: () => void;
+}
+
+const QuickActions = ({ onAddCourse }: QuickActionsProps) => {
   const [isHoveredAdd, setIsHoveredAdd] = useState(false);
   const [isHoveredManage, setIsHoveredManage] = useState(false);
   const [isPressedAdd, setIsPressedAdd] = useState(false);
   const [isPressedManage, setIsPressedManage] = useState(false);
-  const router = useRouter();
-
-  const handleAddCourseClick = () => {
-    router.push('/addCourse');
-  };
 
   return (
     <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
       {/* Add New Course Button */}
       <button 
-        onClick={handleAddCourseClick}
-        className="
+        onClick={onAddCourse}
+        className={`
           relative
           bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700
           text-white 
@@ -40,7 +37,7 @@ const QuickActions = () => {
           group
           border border-blue-500 border-opacity-30
           ${isPressedAdd ? 'scale-95' : ''}
-        "
+        `}
         onMouseEnter={() => setIsHoveredAdd(true)}
         onMouseLeave={() => setIsHoveredAdd(false)}
         onMouseDown={() => setIsPressedAdd(true)}

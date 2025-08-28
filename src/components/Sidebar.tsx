@@ -12,30 +12,27 @@ import {
   PanelLeftOpen,
   GraduationCap
 } from 'lucide-react';
+import Link from 'next/link';
 
 interface SidebarProps {
   isOpen: boolean;
   toggle: () => void;
   isCollapsed: boolean;
   toggleCollapse: () => void;
+  activeItem: string;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse }) => {
-  const [activeItem, setActiveItem] = useState('Dashboard');
+const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse, activeItem }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'courses', label: 'Courses', icon: BookOpen },
-    { id: 'lessons', label: 'Lessons', icon: FileText },
-    { id: 'assessments', label: 'Assessments', icon: ClipboardCheck },
-    { id: 'users', label: 'Users', icon: Users },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    { id: 'courses', label: 'Courses', icon: BookOpen, href: '/courses' },
+    { id: 'lessons', label: 'Lessons', icon: FileText, href: '#' },
+    { id: 'assessments', label: 'Assessments', icon: ClipboardCheck, href: '#' },
+    { id: 'users', label: 'Users', icon: Users, href: '#' },
+    { id: 'settings', label: 'Settings', icon: Settings, href: '#' },
   ];
-
-  const handleItemClick = (label: string) => {
-    setActiveItem(label);
-  };
 
   const getIconComponent = (icon: any, isActive: boolean, isHovered: boolean) => {
     const Icon = icon;
@@ -97,37 +94,37 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggle, isCollapsed, toggleCollapse
             const isHovered = hoveredItem === item.id;
             
             return (
-              <button
-                key={item.id}
-                onClick={() => handleItemClick(item.label)}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
-                className={`
-                  w-full flex items-center p-3 rounded-xl transition-all duration-300 group
-                  ${isCollapsed ? 'justify-center' : ''}
-                  ${isActive 
-                    ? 'bg-blue-500 text-white shadow-sm transform scale-[1.02]' 
-                    : 'text-gray-600 hover:bg-blue-200 hover:text-blue-600 hover:transform hover:scale-[1.02]'
-                  }
-                `}
-                title={isCollapsed ? item.label : ''}
-              >
-                <div className={`
-                  relative flex items-center justify-center
-                  ${isCollapsed ? '' : 'mr-3'}
-                `}>
-                  {getIconComponent(item.icon, isActive, isHovered)}
-              
-                </div>
+              <Link href={item.href} key={item.id}>
+                <button
+                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  className={`
+                    w-full flex items-center p-3 mb-2 rounded-xl transition-all duration-300 group
+                    ${isCollapsed ? 'justify-center' : ''}
+                    ${isActive 
+                      ? 'bg-blue-500 text-white shadow-sm transform scale-[1.02]' 
+                      : 'text-gray-600 hover:bg-blue-200 hover:text-blue-600 hover:transform hover:scale-[1.02]'
+                    }
+                  `}
+                  title={isCollapsed ? item.label : ''}
+                >
+                  <div className={`
+                    relative flex items-center justify-center
+                    ${isCollapsed ? '' : 'mr-3'}
+                  `}>
+                    {getIconComponent(item.icon, isActive, isHovered)}
                 
-                {!isCollapsed && (
-                  <span className="font-medium group-hover:translate-x-1 transition-transform">
-                    {item.label}
-                  </span>
-                )}
-                
-                
-              </button>
+                  </div>
+                  
+                  {!isCollapsed && (
+                    <span className="font-medium group-hover:translate-x-1 transition-transform">
+                      {item.label}
+                    </span>
+                  )}
+                  
+                  
+                </button>
+              </Link>
             );
           })}
         </nav>
