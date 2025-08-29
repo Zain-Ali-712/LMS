@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cpawebsiteimages.blob.core.windows.net',
+        pathname: '/**', // allow all paths
+      },
+    ],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
