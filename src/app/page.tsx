@@ -4,9 +4,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import WebsiteNavbar from "@/components/WebsiteNavbar"; 
 import Footer from "@/components/Footer";
+import HeroSection from "@/components/HeroSection";
 import { FaPhoneAlt, FaEnvelope, FaChevronRight } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 
@@ -163,60 +163,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans overflow-x-hidden">
       <WebsiteNavbar />
-      
-      {/* Hero Section */}
-      <section className="relative py-12 md:py-16 overflow-hidden">
-        <FloatingParticles />
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="md:w-1/2 text-center md:text-left"
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-6">
-              Transform Your Career with Professional Academy
-            </h1>
-            <p className="text-lg md:text-xl text-blue-800 mb-8">
-              Award-winning courses designed in partnership with prestigious awarding bodies for globally recognized qualifications.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="/professional-qualifications/"
-                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors duration-300 shadow-lg"
-                >
-                  Explore Courses
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="https://calendly.com/lewis-walker-1"
-                  className="inline-block bg-orange-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors duration-300 shadow-lg"
-                >
-                  Book a Consultation
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="md:w-1/2"
-          >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                src="https://assets-eur.mkt.dynamics.com/791aa60e-64f1-4a25-9eb0-8f4bbbaa6f6c/digitalassets/images/076b6682-00f5-ef11-be1f-000d3ab4ba51?ts=638762536145204700"
-                alt="Cambridge Professional Academy"
-                className="w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent"></div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Partners Section */}
       <section className="py-12 bg-white">
