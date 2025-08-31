@@ -7,28 +7,40 @@ import WebsiteNavbar from "@/components/WebsiteNavbar";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import PartnersSection from "@/components/PartnerSection";
+import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import { useMediaQuery } from "react-responsive";
 
-// Floating particles component
-const FloatingParticles = () => {
+// Enhanced Floating particles component
+const FloatingParticles = ({ color = "bg-blue-200" }) => {
   return (
     <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-      {Array.from({ length: 15 }).map((_, i) => (
+      {Array.from({ length: 25 }).map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-blue-200 rounded-full opacity-30 blur-sm"
+          className={`absolute w-2 h-2 ${color} rounded-full opacity-30 blur-sm`}
           initial={{
             x: `${Math.random() * 100}vw`,
             y: `${Math.random() * 100}vh`,
             scale: Math.random() * 0.5 + 0.5,
           }}
           animate={{
-            x: [0, `${Math.random() * 100}vw`, `${Math.random() * 100}vw`, 0],
-            y: [0, `${Math.random() * 100}vh`, `${Math.random() * 100}vh`, 0],
-            rotate: 360,
+            x: [
+              `${Math.random() * 100}vw`,
+              `${Math.random() * 100}vw`,
+              `${Math.random() * 100}vw`,
+              `${Math.random() * 100}vw`,
+            ],
+            y: [
+              `${Math.random() * 100}vh`,
+              `${Math.random() * 100}vh`,
+              `${Math.random() * 100}vh`,
+              `${Math.random() * 100}vh`,
+            ],
+            rotate: [0, 180, 360, 0],
+            scale: [1, 1.2, 1.5, 1],
           }}
           transition={{
-            duration: 20 + i * 5,
+            duration: 15 + i * 3,
             repeat: Infinity,
             ease: "linear",
           }}
@@ -38,7 +50,7 @@ const FloatingParticles = () => {
   );
 };
 
-// Animated counter component with one-time animation
+// Enhanced Animated counter component
 const AnimatedCounter = ({ target, label, icon }: { target: number; label: string; icon: React.ReactNode }) => {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -66,7 +78,7 @@ const AnimatedCounter = ({ target, label, icon }: { target: number; label: strin
           return () => clearInterval(timer);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
 
     if (ref.current) {
@@ -83,28 +95,49 @@ const AnimatedCounter = ({ target, label, icon }: { target: number; label: strin
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
-      viewport={{ once: true }}
-      className="stat-item flex flex-col items-center p-4 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 hover:bg-white/15 transition-all duration-300"
+      initial={{ opacity: 0, y: 50, scale: 0.8, rotate: -5 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+      transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ 
+        y: -10, 
+        scale: 1.05,
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
+      className="stat-item flex flex-col items-center p-4 bg-white/15 backdrop-blur-lg rounded-2xl shadow-lg border-2 border-white/30 hover:border-white/50 transition-all duration-500 relative overflow-hidden group"
     >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      
       <motion.div 
-        className="mb-4 p-2 bg-white/20 rounded-full"
-        whileHover={{ rotate: 360, scale: 1.1 }}
-        transition={{ duration: 0.7 }}
+        className="mb-3 p-2 bg-white/25 rounded-full"
+        whileHover={{ rotate: 360, scale: 1.2 }}
+        transition={{ duration: 0.7, type: "spring" }}
       >
         {icon}
       </motion.div>
-      <div className="text-3xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+      
+      <motion.div 
+        className="text-3xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
+        initial={{ scale: 0.5 }}
+        whileInView={{ scale: 1 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+      >
         {count}+
-      </div>
-      <p className="text-base md:text-lg text-white/90 text-center font-medium">{label}</p>
+      </motion.div>
+      
+      <motion.p 
+        className="text-base md:text-lg text-white/95 text-center font-medium"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        {label}
+      </motion.p>
     </motion.div>
   );
 };
 
-// Custom icons for stats
+// Enhanced Custom icons for stats
 const YearsIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -171,9 +204,35 @@ const stats = [
   { icon: <CountriesIcon />, target: 100, label: "countries" },
 ];
 
+// Enhanced Button component with animations
+const AnimatedButton = ({ href, children, className = "", variant = "primary" }) => {
+const baseClasses = "inline-block px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg relative overflow-hidden group";
+  
+  const variantClasses = {
+    primary: "bg-white text-blue-600 hover:bg-blue-50",
+    secondary: "bg-amber-500 text-white hover:bg-amber-600",
+    outline: "bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white"
+  };
+
+  return (
+    <motion.div 
+      whileHover={{ scale: 1.05, y: -3 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+    >
+      <Link href={href} 
+        className={`${baseClasses} ${variantClasses[variant]} ${className}`}>
+        <span className="relative z-10">{children}</span>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      </Link>
+    </motion.div>
+  );
+};
+
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -192,11 +251,11 @@ export default function Home() {
       <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-blue-100"
+            transition={{ duration: 0.8, type: "spring" }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-blue-100/50"
           >
             <p className="text-xl text-blue-800 text-center leading-relaxed">
               With a long-standing track record of delivering{" "}
@@ -217,86 +276,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Success Stories Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Success Stories</h2>
-            <p className="text-xl text-blue-800 max-w-3xl mx-auto">
-              Discover how our students have transformed their careers and achieved remarkable success 
-              through our professional development programs.
-            </p>
-          </motion.div>
+      <TestimonialsCarousel />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="relative h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-2 border-white/20"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                transition={{ duration: 0.7 }}
-                className="absolute inset-0"
-              >
-                <img
-                  src={(isMobile ? mobileBanners : banners)[currentIndex].src}
-                  alt={(isMobile ? mobileBanners : banners)[currentIndex].alt}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end">
-                  <div className="p-6 text-white">
-                    <h3 className="text-xl md:text-2xl font-bold mb-2">{(isMobile ? mobileBanners : banners)[currentIndex].title}</h3>
-                    <p className="text-sm md:text-base opacity-90">{(isMobile ? mobileBanners : banners)[currentIndex].description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Carousel indicators */}
-            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3">
-              {(isMobile ? mobileBanners : banners).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index ? "bg-amber-400 scale-125" : "bg-white/70 scale-100"}`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
+      {/* Enhanced Stats Section */}
       <section className="py-12 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 text-white relative overflow-hidden">
-        <FloatingParticles />
-        <div className="container mx-auto px-4">
+        <FloatingParticles color="bg-blue-300/40" />
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.8, type: "spring" }}
+            viewport={{ once: true, margin: "-50px" }}
             className="text-center mb-8"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Professional Academy?</h2>
-            <p className="text-lg max-w-2xl mx-auto opacity-90">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold mb-4"
+              initial={{ scale: 0.9 }}
+              whileInView={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+            >
+              Why Choose Professional Academy?
+            </motion.h2>
+            <motion.p 
+              className="text-xl max-w-2xl mx-auto opacity-90"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               With decades of experience and thousands of successful students, we're the leading provider of professional qualifications.
-            </p>
+            </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.6, staggerChildren: 0.2 }}
+          >
             {stats.map((stat, index) => (
               <AnimatedCounter
                 key={index}
@@ -305,74 +321,57 @@ export default function Home() {
                 icon={stat.icon}
               />
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-blue-50">
-        <div className="container mx-auto px-4">
+      {/* Enhanced CTA Section */}
+      <section className="py-16 bg-gradient-to-b from-white to-blue-50/50 relative overflow-hidden">
+        <FloatingParticles color="bg-purple-300/40" />
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-10 md:p-14 text-white text-center shadow-2xl relative overflow-hidden border-2 border-white/20"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, type: "spring" }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-3xl p-8 md:p-12 text-white text-center shadow-2xl relative overflow-hidden border-2 border-white/20"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-700/30 to-purple-700/30"></div>
-            <FloatingParticles />
-            
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold mb-6 relative z-10"
+              className="text-3xl md:text-4xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Not Sure Which Course is Right for You?
+              Ready to Transform Your Career?
             </motion.h2>
             
             <motion.p 
-              className="text-xl mb-10 max-w-2xl mx-auto relative z-10 opacity-95"
+              className="text-xl mb-8 max-w-2xl mx-auto opacity-95"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              Try our quick and easy Qualifications Navigator to see which Level is best, book a call with a qualifications advisor to discuss, or send us a message today.
+              Take the first step towards your professional growth. Explore our courses, speak with an advisor, or get more information today.
             </motion.p>
             
             <motion.div 
-              className="flex flex-col md:flex-row gap-6 justify-center relative z-10"
+              className="flex flex-col md:flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
+              transition={{ duration: 0.7, delay: 0.4, staggerChildren: 0.1 }}
               viewport={{ once: true }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="/professional-qualifications/which-qualification-is-right-for-you/"
-                  className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Qualifications Navigator
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="https://calendly.com/lewis-walker-1"
-                  className="inline-block bg-amber-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Book a Call
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="mailto:info@professionalacademy.com"
-                  className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Email Us
-                </Link>
-              </motion.div>
+              <AnimatedButton href="/professional-qualifications/which-qualification-is-right-for-you/" variant="outline">
+                Explore Courses
+              </AnimatedButton>
+              <AnimatedButton href="https://calendly.com/lewis-walker-1" variant="secondary">
+                Book a Consultation
+              </AnimatedButton>
+              <AnimatedButton href="mailto:info@professionalacademy.com" variant="outline">
+                Get Information
+              </AnimatedButton>
             </motion.div>
           </motion.div>
         </div>

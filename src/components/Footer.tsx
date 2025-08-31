@@ -112,7 +112,7 @@ const Footer = () => {
                 whileHover={{ x: 5 }}
                 className="flex items-center gap-3 group"
               >
-                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors flex-shrink-0">
                   <FaPhoneAlt className="text-white text-sm" />
                 </div>
                 <div>
@@ -125,35 +125,35 @@ const Footer = () => {
                   </Link>
                 </div>
               </motion.div>
-
+              
               <motion.div 
                 whileHover={{ x: 5 }}
                 className="flex items-center gap-3 group"
               >
-                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors">
-                  <FaEnvelope className="text-white text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm text-blue-200">Email us</p>
-                  <Link 
-                    href="mailto:enquiries@professionalacademy.com" 
-                    className="text-white font-medium hover:text-orange-300 transition-colors"
-                  >
-                    enquiries@professionalacademy.com
-                  </Link>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ x: 5 }}
-                className="flex items-center gap-3 group"
-              >
-                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors flex-shrink-0">
                   <FaMapMarkerAlt className="text-white text-sm" />
                 </div>
                 <div>
                   <p className="text-sm text-blue-200">Based in</p>
                   <p className="text-white font-medium">Cambridge, UK</p>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ x: 5 }}
+                className="flex items-start gap-3 group"
+              >
+                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors flex-shrink-0 mt-1">
+                  <FaEnvelope className="text-white text-sm" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-blue-200">Email us</p>
+                  <Link 
+                    href="mailto:enquiries@professionalacademy.com" 
+                    className="text-white font-medium hover:text-orange-300 transition-colors break-words"
+                  >
+                    enquiries@professionalacademy.com
+                  </Link>
                 </div>
               </motion.div>
             </div>
